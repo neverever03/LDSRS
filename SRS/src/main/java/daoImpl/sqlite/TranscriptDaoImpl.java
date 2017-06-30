@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.Map.Entry;
 import dao.TranscriptDao;
 import model.Course;
+import model.ISpecification;
+import model.IfPlanSpecification;
 import model.Section;
 import model.Student;
 import model.Transcript;
@@ -99,26 +101,39 @@ public class TranscriptDaoImpl implements TranscriptDao {
 		return studentTranscripts;
 	}
 
-	
+	//选课
 	@Override
 	public void addTranscript(TranscriptEntity transcriptentry) {
 		Connection Conn = DBUtil.getSqliteConnection();
 		Student student = transcriptentry.getStudent();
 		Section section = transcriptentry.getSection();
-		String sql = "INSERT INTO Transcript(studentSsn,fullSectionNo,grade) VALUES(?,?,?)";
-		PreparedStatement stmt = null;
-		try {
-			stmt = Conn.prepareStatement(sql);
-			stmt.setString(1, student.getSsn());
-			stmt.setString(3, transcriptentry.getGrade());
-			stmt.setString(2, section.getFullSectionNo());
-			stmt.executeUpdate();
-			stmt.close();
-			Conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+		ISpecification ifPlanspec = new IfPlanSpecification();
+		ISpecification ifSelectspec = new IfPlanSpecification();
+		ISpecification ifPrevPassspec = new IfPlanSpecification();	
+     String  result1=ifPlanspec.validate(student, section);
+     String  result2=ifSelectspec.validate(student, section);
+     String  result3=ifPrevPassspec.validate(student, section);
+       if(result1==null&&  result2==null&&result3==null){
+    	   
+    	   
+   		String sql = "INSERT INTO Transcript(studentSsn,fullSectionNo,grade) VALUES(?,?,?)";
+   		PreparedStatement stmt = null;
+   		try {
+   			stmt = Conn.prepareStatement(sql);
+   			stmt.setString(1, student.getSsn());
+   			stmt.setString(3, transcriptentry.getGrade());
+   			stmt.setString(2, section.getFullSectionNo());
+   			stmt.executeUpdate();
+   			stmt.close();
+   			Conn.close();
+   		} catch (SQLException e) {
+   			e.printStackTrace();
+   		}
+   	}
+       }
+
+		
+	
 
 	@Override
 	public HashMap<String, TranscriptEntity> getBysection(Section se) {
