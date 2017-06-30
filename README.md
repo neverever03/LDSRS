@@ -30,10 +30,10 @@ Final Project。。。。。。。。。。。。。。。。。。
 
 
 ## 数据库
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/course.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/person.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/planofstudy.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/scheduleofclasses.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/section.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/transcriptentity.jpg）
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/user.jpg）
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/course.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/person.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/planofstudy.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/scheduleofclasses.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/section.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/transcriptentity.jpg)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/user.jpg)
