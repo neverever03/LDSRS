@@ -3,7 +3,7 @@ Final Project。。。。。。。。。。。。。。。。。。
 ## UML
 ![image](https://github.com/neverever03/LDSRS/blob/master/pictures/SRS%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9B%BE.jpg)
 ## 数据库结构图
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/SRS.png)
+![image](https://github.com/neverever03/LDSRS/blob/master/pictures/SRS.PNG)
 ## 项目结构
 ![image](https://github.com/neverever03/LDSRS/blob/master/pictures/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.JPG)
 ## 顺序图
@@ -30,7 +30,6 @@ Final Project。。。。。。。。。。。。。。。。。。
 
 
 ## 数据库
-![image](https://github.com/neverever03/LDSRS/blob/master/pictures/course.jpg)
 ![image](https://github.com/neverever03/LDSRS/blob/master/pictures/person.jpg)
 ![image](https://github.com/neverever03/LDSRS/blob/master/pictures/planofstudy.jpg)
 ![image](https://github.com/neverever03/LDSRS/blob/master/pictures/scheduleofclasses.jpg)
