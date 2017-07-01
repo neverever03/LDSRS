@@ -8,90 +8,37 @@
     <constant name="struts.devMode" value="true" />
     <package name="srs" namespace="/" extends="json-default" strict-method-invocation="false">
     <action name="login" class="com.srs.action.LoginAction">
-    		<result name="student">index.jsp</result>
-    		<result name="professor">index2.jsp</result>
+    		<result name="student">student.jsp</result>
+    		<result name="professor">professor.jsp</result>
     		<result name="login">login.html</result>
     	</action>
-    	<action name="userAction_*"  class="action.UserAction" method="{1}">
-			<result name="jsonArray" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonArray</param>
+    	<action name="planOfStudy" class="action.PlanOfStudyAction">
+    		<result>course.jsp</result>
+    	</action>
+    	<action name="section" class="com.srs.action.SectionAction">
+    		<result type="json">
+				<param name="root">root</param>
 			</result>
-			<result name="jsonObject" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonObject</param>
-			</result>		
-		</action>
-		<action name="courseAction_*"  class="action.SearchCourseAction" method="{1}">
-			<result name="jsonArray" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonArray</param>
-			</result>
-			<result name="jsonObject" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonObject</param>
-			</result>		
-		</action>
-		<action name="sectionAction_*"  class="action.SectionAction" method="{1}">
-			<result name="jsonArray" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonArray</param>
-			</result>
-			<result name="jsonObject" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonObject</param>
-			</result>		
-		</action>
-		<action name="personAction_*"  class="action.PersonAction" method="{1}">
-			<result name="jsonArray" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonArray</param>
-			</result>
-			<result name="jsonObject" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonObject</param>
-			</result>		
-		</action>
-		<action name="planOfStudyAction_*"  class="action.PlanOfStudyAction" method="{1}">
-			<result name="jsonArray" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonArray</param>
-			</result>
-			<result name="jsonObject" type="json">
-				<!-- 为该Result指定参数 -->
-				<param name="noCache">true</param>
-				<param name="contentType">text/html</param>
-				<!-- 设置只序列Action的map属性 -->
-				<param name="root">jsonObject</param>
-			</result>		
-		</action>
+    	</action>
+    	<action name="hasCourse" class="action.HasCourseAction">
+    		<result>transcript.jsp</result>
+    	</action>
+    	<action name="courseNow" class="action.SectionAction" method="getProfessorSection">
+    		<result>procourseplan.jsp</result>
+    	</action>
+    	<action name="addc" class="action.SearchCourseAction" method="addCourse" >
+    		<result>proaddsection.jsp</result>
+    	</action>
+    	
+    <action name="editc" class="action.SearchCourseAction" method="editCourse" >
+    		<result>procourseplan.jsp</result>
+    	</action>
+    	
+    
+    	<action name="delc" class="action.SearchCourseAction" method="delCourse" >
+    		<result>procourseplan.jsp</result>
+    	</action>
+
     	<action name="*">
 			<result>/WEB-INF/content/{1}.jsp</result>			
 		</action>

@@ -25,7 +25,7 @@ public class PlanOfStudyAction extends ActionSupport {
 	private JSONArray jsonArray = new JSONArray();
 	
 
-	public String findAllPlan(){
+	public String PlanOfStudy(){
 		PlanOfStudyService planOfStudyService = new PlanOfStudyService();
 		PersonService personService = new PersonService();
 		HashMap<String, Student> students = personService.findAllStudents();

@@ -138,7 +138,7 @@ public class SectionAction extends ActionSupport {
 	}
 	
 
-	public String getDetial(){
+	public String getDetail(){
 		TranscriptDao transcriptDao = DaoFactory.createTranscriptDao();
 		SectionDao sectionDao =  DaoFactory.createSectionDao();
 		Section section = sectionDao.findAll().get(sectionNo);

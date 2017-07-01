@@ -34,9 +34,9 @@ public class HasCourseAction extends ActionSupport {
 		Transcript t = new Transcript();
 		TranscriptDao dao = new TranscriptDaoImpl();
 		List<TranscriptEntity> list = dao.getTranscript();
-		for (TranscriptEntity te : list) {
-			if (te.getStudent().getSsn().equals(s.getSsn()))
-				t.addTranscriptEntry(te);
+		for (TranscriptEntity tt : list) {
+			if (tt.getStudent().getSsn().equals(s.getSsn()))
+				t.addTranscriptEntry(tt);
 		}
 
 		List<TranscriptEntity> tList = t.display();

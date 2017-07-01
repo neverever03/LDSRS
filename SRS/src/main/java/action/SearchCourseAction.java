@@ -8,11 +8,16 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import dao.CourseDao;
 import dao.DaoFactory;
+import dao.SectionDao;
+import daoImpl.sqlite.SectionDaoImpl;
 import model.Course;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import service.CourseService;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 public class SearchCourseAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 1L;
@@ -22,7 +27,10 @@ public class SearchCourseAction extends ActionSupport {
 	public String courseName;
 	public String credits;
 	public String prerequisite;
-
+	public String week;
+   public String room;
+   public String seat;
+   public String time;
 	public String findAllCourse(){
 		CourseService courseService = new CourseService();
 		HashMap<String,Course> courses = courseService.findAll();
@@ -58,6 +66,19 @@ public class SearchCourseAction extends ActionSupport {
 		CourseDao courseDao =  DaoFactory.createCourseDao();
 		courseDao.deleteCourse(course);
 		return "jsonObject";
+	}
+	public String editCourse() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String courseNo = getCourseNo();
+		String sectionNo = request.getParameter("sectionNo");
+		String week = getWeek();
+		String room = getRoom();
+		String seat = getSeat();
+		String time = getTime();
+		String ssn = request.getParameter("ssn");
+		SectionDao dao = new SectionDaoImpl();
+		dao.updateSection(courseNo, sectionNo, week, room, seat, time, ssn);
+		return SUCCESS;
 	}
 	
 	
@@ -110,6 +131,54 @@ public class SearchCourseAction extends ActionSupport {
 
 	public void setPrerequisite(String prerequisite) {
 		this.prerequisite = prerequisite;
+	}
+
+
+
+	public String getWeek() {
+		return week;
+	}
+
+
+
+	public void setWeek(String week) {
+		this.week = week;
+	}
+
+
+
+	public String getRoom() {
+		return room;
+	}
+
+
+
+	public void setRoom(String room) {
+		this.room = room;
+	}
+
+
+
+	public String getSeat() {
+		return seat;
+	}
+
+
+
+	public void setSeat(String seat) {
+		this.seat = seat;
+	}
+
+
+
+	public String getTime() {
+		return time;
+	}
+
+
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 	

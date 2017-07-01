@@ -1,86 +1,218 @@
 package daoImpl.mock;
 
 
-import java.util.ArrayList;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import dao.SectionDao;
 import model.Course;
 import model.Professor;
+import model.ScheduleOfClasses;
 import model.Section;
 import model.User;
+import util.DBUtil;
 
-public class SectionDaoImpl implements SectionDao{
+public class SectionDaoImpl implements SectionDao {
 
-	
+	@Override
+	public HashMap<String, Section> findAll() {
+		Connection Conn = DBUtil.getSqliteConnection();
+		HashMap<String, Section> sections = new HashMap<String, Section>();
+		HashMap<String, Course> courses = new CourseDaoImpl().findAll();
+		String sql = "select * from Section";
+		try {
+			PreparedStatement pstmt = Conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Course course = courses.get(rs.getString("course"));
+				Section section = new Section(rs.getInt("sectionNo"), rs.getString("dayOfWeek").charAt(0),
+				rs.getString("timeOfDay"), course, rs.getString("room"), rs.getInt("seatingCapacity"));
+				ScheduleOfClasses sc = new ScheduleOfClasses(rs.getString("semester"));
+				section.setOfferedIn(sc);
+				sql = "select * from Person where ssn=?";
+				pstmt = Conn.prepareStatement(sql);
+				pstmt.setString(1, rs.getString("professor"));
+				ResultSet per = pstmt.executeQuery();
+				Professor pro = new Professor(per.getString("name"), per.getString("ssn"), per.getString("title"),
+				per.getString("department"));
+				section.setInstructor(pro);
+				sections.put(Integer.toString(section.getSectionNo()), section);
+			}
+			if (rs != null) {
+				rs.close();
+				pstmt.close();
+			}
+			Conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sections;
+	}
+
+	@Override
+	public void addSection(Section section, Professor professor, String semester) {
+		Connection Conn = DBUtil.getSqliteConnection();
+		String sql = "INSERT INTO Section(sectionNo,dayOfWeek,timeOfDay,room,seatingCapacity,professor,course,semester) VALUES(?,?,?,?,?,?,?,?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = Conn.prepareStatement(sql);
+			String courseNO = section.getRepresentedCourse().getCourseNo();
+			pstmt.setInt(1, section.getSectionNo());
+			pstmt.setString(2, String.valueOf(section.getDayOfWeek()));
+			pstmt.setString(3, section.getTimeOfDay());
+			pstmt.setString(4, section.getRoom());
+			pstmt.setInt(5, section.getSeatingCapacity());
+			pstmt.setString(6, professor.getSsn());
+			pstmt.setString(7, courseNO);
+			pstmt.setString(8, semester);
+			pstmt.executeUpdate();
+			pstmt.close();
+			Conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 	@Override
 	public HashMap<String, Section> findBySemester(String semester) {
-		
+		Connection Conn = DBUtil.getSqliteConnection();
 		HashMap<String, Section> sections = new HashMap<String, Section>();
-		Map<String, Course> allCourses = new CourseDaoImpl().findAll();
-        
-		Section sec1, sec2, sec3, sec4, sec5, sec6, sec7;
-		Course c;
-		c = allCourses.get("CMP101");
-		sec1 = new Section(1,'M', "8:10 - 10:00 PM", c , "GOVT101", 30);
-		sections.put(c.getCourseNo() + "-" + sec1.getSectionNo(), sec1);
-		sec2 = new Section(2,'W', "6:10 - 8:00 PM", c , "GOVT202", 30);
-		sections.put(c.getCourseNo() + "-" + sec2.getSectionNo(), sec2);
-		
-		c = allCourses.get("OBJ101");
-		sec3 = new Section(1,'R', "4:10 - 6:00 PM", allCourses.get("OBJ101"), "GOVT105", 25);
-		sections.put(c.getCourseNo() + "-" + sec3.getSectionNo(), sec3);
-		sec4 = new Section(2,'T', "6:10 - 8:00 PM", allCourses.get("OBJ101"), "SCI330", 25);
-		sections.put(c.getCourseNo() + "-" + sec4.getSectionNo(), sec4);
-		
-		
-		c = allCourses.get("CMP283");
-		sec5 = new Section(1,'M', "6:10 - 8:00 PM", allCourses.get("CMP283"), "GOVT101", 20);
-		sections.put(c.getCourseNo() + "-" + sec5.getSectionNo(), sec5);
-		
-		c = allCourses.get("CMP999");
-		sec6 = new Section(1, 'R', "4:10 - 6:00 PM", allCourses.get("CMP999"), "SCI241", 15);
-		sections.put(c.getCourseNo() + "-" + sec6.getSectionNo(), sec6);
-		
-		c = allCourses.get("ART101");
-		sec7 = new Section(1, 'M', "4:10 - 6:00 PM", allCourses.get("ART101"), "ARTS25", 40);
-		sections.put(c.getCourseNo() + "-" + sec7.getSectionNo(), sec7);
-		
+		HashMap<String, Course> allCourses = new CourseDaoImpl().findAll();
+		String sql = "select * from Section ,ScheduleOfClasses where  semester=? and FullSectionNo=sectionID";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = Conn.prepareStatement(sql);
+			pstmt.setString(1, semester);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Set<HashMap.Entry<String, Course>> set = allCourses.entrySet();
+				for (Iterator<Entry<String, Course>> iterator = set.iterator(); iterator.hasNext();) {
+					HashMap.Entry<String, Course> entry = (HashMap.Entry<String, Course>) iterator.next();
+					String key = entry.getKey();
+					Course value = entry.getValue();
+					if (rs.getString("representedCourse").equals(key)) {
+						Section sec;
+						sec = new Section(rs.getInt("sectionNo"), rs.getString("dayOfWeek").charAt(0),
+								rs.getString("timeOfDay"), value, rs.getString("room"), rs.getInt("seatingCapacity"));
+						sections.put(value.getCourseNo() + "-" + sec.getSectionNo(), sec);
+					}
+				}
+			}
+			if (rs != null) {
+				rs.close();
+				pstmt.close();
+				Conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return sections;
 	}
 
 
 	@Override
-	public HashMap<String, Section> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void updateSection(Section section) {
+		Connection Conn = DBUtil.getSqliteConnection();
+		String sql = "update Section set seatingCapacity=? where sectionNo=?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = Conn.prepareStatement(sql);
+			pstmt.setInt(1, section.getSectionNo());
+			pstmt.setInt(2, section.getSeatingCapacity()-1);
+			pstmt.executeUpdate();
+			pstmt.close();
+			Conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	@Override
-	public void addSection(Section section, Professor professor, String semester) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void deleteSection(String FullSectionNo) {
-		// TODO Auto-generated method stub
-		
-	}
+		Connection Conn = DBUtil.getSqliteConnection();
+		String sql = "DELETE FROM Section WHERE FullSectionNo=?";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = Conn.prepareStatement(sql);
+			pstmt.setString(1, FullSectionNo);
+			pstmt.executeUpdate();
+			Conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	@Override
-	public void updateSection(Section section) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public HashMap<String, Section> findByProfessor(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection Conn = DBUtil.getSqliteConnection();
+		HashMap<String, Section> sections = new HashMap<String, Section>();
+		HashMap<String, Course> courses = new CourseDaoImpl().findAll();
+		String sql = "select * from Section where professor=?";
+		try {
+			PreparedStatement pstmt = Conn.prepareStatement(sql);
+			pstmt.setString(1, user.getSsn());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Course course = courses.get(rs.getString("course"));
+				Section section = new Section(rs.getInt("sectionNo"), rs.getString("dayOfWeek").charAt(0),
+				rs.getString("timeOfDay"), course, rs.getString("room"), rs.getInt("seatingCapacity"));
+				ScheduleOfClasses sc = new ScheduleOfClasses(rs.getString("semester"));
+				section.setOfferedIn(sc);
+				sql = "select * from Person where ssn=?";
+				pstmt = Conn.prepareStatement(sql);
+				pstmt.setString(1, rs.getString("professor"));
+				ResultSet per = pstmt.executeQuery();
+				Professor pro = new Professor(per.getString("name"), per.getString("ssn"), per.getString("title"),
+				per.getString("department"));
+				section.setInstructor(pro);
+				sections.put(Integer.toString(section.getSectionNo()), section);
+			}
+			if (rs != null) {
+				rs.close();
+				pstmt.close();
+			}
+			Conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sections;
 	}
+
+	@Override
+	public void updateSection(String courseNo, String sectionNo, String week, String room, String seat, String time,
+			String ssn) {
+		Connection Conn = DBUtil.getSqliteConnection();
+		String sql = "update section set sectionno=?,dayofweek=?,timeofday=?,representedcourseno=?,roomseating=?,capacity=? where professorno =?";
+		try {
+			PreparedStatement pstmt = Conn.prepareStatement(sql);
+			pstmt.setString(1, sectionNo);
+			pstmt.setString(2, week);
+			pstmt.setString(3, time);
+			pstmt.setString(4, courseNo);
+			pstmt.setString(5, room);
+			pstmt.setInt(6, Integer.parseInt(seat));
+			pstmt.setString(7, ssn);
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+	}
+
+
+
+	
 
 }

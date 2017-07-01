@@ -19,6 +19,8 @@ public interface SectionDao {
 	void updateSection(Section section);
 	//查询教师教的课程
 	public HashMap<String, Section> findByProfessor(User user);
-	
+	public void updateSection(String courseNo, String sectionNo, String week, String room, String seat, String time,
+			String ssn);
+
 	 
 }

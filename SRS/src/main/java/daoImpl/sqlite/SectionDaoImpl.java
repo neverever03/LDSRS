@@ -191,6 +191,31 @@ public class SectionDaoImpl implements SectionDao {
 		return sections;
 	}
 
+
+	@Override
+	public void updateSection(String courseNo, String sectionNo, String week, String room, String seat, String time,
+			String ssn) {
+		// TODO Auto-generated method stub
+		Connection Conn = DBUtil.getSqliteConnection();
+		String sql = "update section set sectionno=?,dayofweek=?,timeofday=?,representedcourseno=?,roomseating=?,capacity=? where professorno =?";
+		try {
+			PreparedStatement pstmt = Conn.prepareStatement(sql);
+			pstmt.setString(1, sectionNo);
+			pstmt.setString(2, week);
+			pstmt.setString(3, time);
+			pstmt.setString(4, courseNo);
+			pstmt.setString(5, room);
+			pstmt.setInt(6, Integer.parseInt(seat));
+			pstmt.setString(7, ssn);
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+
 	
 
 }

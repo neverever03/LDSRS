@@ -42,13 +42,7 @@ public abstract class Person {
 		return ssn;
 	}
 
-	//-----------------------------
-	// Miscellaneous other methods.
-	//-----------------------------
-
-	// We'll let each subclass determine how it wishes to be
-	// represented as a String value.
-
+	
 	public abstract String toString(); 
 
 	public void display() {
