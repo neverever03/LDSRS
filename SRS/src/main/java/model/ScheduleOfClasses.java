@@ -32,32 +32,14 @@ public class ScheduleOfClasses {
 	}
 
 
-	/*public void display() {
-		System.out.println("Schedule of Classes for " + getSemester());
-		System.out.println();
-
-		for (Section s : sectionsOffered.values()) {
-			s.display();
-			System.out.println();
-		}
-	}*/
-
 	public void addSection(Section s) {
-		// We formulate a key by concatenating the course no.
-		// and section no., separated by a hyphen.
 
 		String key = s.getRepresentedCourse().getCourseNo() + 
 			     " - " + s.getSectionNo();
 		sectionsOffered.put(key, s);
 
-		// Bidirectionally link the ScheduleOfClasses back to the Section.
-
 		s.setOfferedIn(this);
 	}
-
-	// The full section number is a concatenation of the
-	// course no. and section no., separated by a hyphen;
-	// e.g., "ART101 - 1".
 
 	public Section findSection(String fullSectionNo) {
 		return sectionsOffered.get(fullSectionNo);

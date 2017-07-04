@@ -1,16 +1,9 @@
 package model;
 
 public abstract class Person {
-	//------------
-	// Attributes.
-	//------------
 
 	private String name;
 	private String ssn;
-	
-	//----------------
-	// Constructor(s).
-	//----------------
 
 	public Person(String name, String ssn) {
 		this.setName(name);
@@ -22,10 +15,6 @@ public abstract class Person {
 		this.setSsn("???-??-????");
         }
 	
-	//------------------
-	// Accessor methods.
-	//------------------
-
 	public void setName(String n) {
 		name = n;
 	}

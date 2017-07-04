@@ -148,7 +148,7 @@ public class Section {
 		this.enrolledStudents = enrolledStudents;
 	}
 
-	/*public EnrollmentStatus enroll(Student s) {
+/*public EnrollmentStatus enroll(Student s) {
 
 		
 		ArrayList<TranscriptEntity> transcript = s.getTranscript();
@@ -266,6 +266,10 @@ enrolledStudents.put(s.getSsn(), s);
 	}
 	public void setCourse(Course course) {
 		this.representedCourse = course;
+	}
+	public EnrollmentStatus enroll(Student student) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

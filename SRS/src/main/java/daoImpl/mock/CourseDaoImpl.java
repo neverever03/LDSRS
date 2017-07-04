@@ -1,5 +1,9 @@
 package daoImpl.mock;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +11,8 @@ import java.util.List;
 import dao.CourseDao;
 import model.Course;
 import model.CourseCatalog;
+import util.DBUtil;
+
 import java.util.HashMap;
 import dao.CourseDao;
 import model.Course;
@@ -36,9 +42,11 @@ public class CourseDaoImpl implements CourseDao {
 
 	@Override
 	public Course getByCourseNo(String CourseNo) {
-		// TODO Auto-generated method stub
 		return null;
+		// TODO Auto-generated method stub
+	
 	}
+	
 
 	@Override
 	public void addCourse(Course course) {

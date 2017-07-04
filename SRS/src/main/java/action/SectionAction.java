@@ -75,7 +75,7 @@ public class SectionAction extends ActionSupport {
 		return "jsonObject";
 	}
 
-	/*public String addTranscript(){
+/*public String addTranscript(){
 		jsonObject.put("status", "ok");
 		SectionDao sectionDao =  DaoFactory.createSectionDao();
 		PersonDao personDao =  DaoFactory.createPersonDao();

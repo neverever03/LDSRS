@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Student extends Person {
-	//------------
-	// Attributes.
-	//------------
 
 	private String major;
 	private String degree;

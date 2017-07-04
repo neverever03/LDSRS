@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 import dao.TranscriptDao;
@@ -21,7 +23,7 @@ import model.User;
 import util.DBUtil;
 
 public class TranscriptDaoImpl implements TranscriptDao {
-
+	private Transcript transcript;
 	@Override
 	public HashMap<String, TranscriptEntity> findAll() {
 		Connection Conn = DBUtil.getSqliteConnection();
@@ -208,6 +210,10 @@ public class TranscriptDaoImpl implements TranscriptDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	
+	
 
 	
 
